@@ -17,9 +17,11 @@ public class AppExceptionHandler {
         Map<String,Object> errorResponse = new HashMap<>();
         errorResponse.put("success",false);
         errorResponse.put("error","validation error");
+        Map<String,String> validationResponse = new HashMap<>();
         for (FieldError error : e.getBindingResult().getFieldErrors()) {
-            errorResponse.put(error.getField(), error.getDefaultMessage());
+            validationResponse.put(error.getField(), error.getDefaultMessage());
         }
+        errorResponse.put("validation",validationResponse);
         return errorResponse;
     }
 
