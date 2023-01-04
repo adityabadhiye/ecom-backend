@@ -15,12 +15,12 @@ public class CreateOrderRequest {
     @NotBlank
     private String state;
     @NotBlank
-    @Pattern(regexp = "^\\d{6}$")
+    @Pattern(regexp = "^\\d{6}$", message = "Invalid zipcode")
     private String zip;
     @NotBlank
     private String country;
     @NotBlank
-    @Pattern(regexp = "^\\d{10}$")
+    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone")
     private String phone;
 
     private String orderNotes;
