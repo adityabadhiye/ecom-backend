@@ -9,7 +9,7 @@ public class Constant {
             "/v2/api-docs/**","webjars/**","/webhook/stripe-events"
     };
     public static final List<String> PUBLIC_URLS_LIST = List.of(PUBLIC_URLS);
-    public static final String DEFAULT_PAGE_SIZE = "25";
+    public static final String DEFAULT_PAGE_SIZE = "12";
     public static final String DEFAULT_PAGE_NUMBER = "1";
     public static final String DEFAULT_SORT_BY = "id";
     public static final String DEFAULT_ASC = "true";
