@@ -7,5 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class CreateOrderResponse {
     private String paymentURL;
-    private boolean success;
 }

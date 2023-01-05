@@ -4,6 +4,7 @@ import com.example.ecom.api.request.CreateOrderRequest;
 import com.example.ecom.api.response.CreateOrderResponse;
 import com.example.ecom.api.response.OrderDetailResponse;
 import com.example.ecom.api.response.OrderListItemResponse;
+import com.example.ecom.api.response.SuccessResponse;
 import com.example.ecom.database.entity.Order;
 import com.example.ecom.exception.CommonAPIException;
 import com.example.ecom.service.CartService;
@@ -29,7 +30,7 @@ public class OrderController {
     ModelMapper modelMapper;
 
     @PostMapping(path = "/create-order")
-    public ResponseEntity<CreateOrderResponse> createOrder(
+    public ResponseEntity<SuccessResponse<CreateOrderResponse>> createOrder(
             @RequestBody @Valid CreateOrderRequest request
     ) throws CommonAPIException, StripeException {
         if(cartService.isCartEmpty())
@@ -46,22 +47,22 @@ public class OrderController {
         orderService.save(order);
         cartService.clear();
         String sessionId = orderService.createPaymentSession(order.getId());
-        return ResponseEntity.ok(new CreateOrderResponse(sessionId,true));
+        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse(sessionId)));
     }
 
     @GetMapping(path = "/order")
-    public ResponseEntity<OrderDetailResponse> getOrderDetail(
+    public ResponseEntity<SuccessResponse<OrderDetailResponse>> getOrderDetail(
             @RequestParam(value = "order_id") long orderId
     ) throws CommonAPIException {
         Order order = orderService.getOrderDetail(orderId);
-        return ResponseEntity.ok(modelMapper.map(order,OrderDetailResponse.class));
+        return ResponseEntity.ok(new SuccessResponse<>(modelMapper.map(order,OrderDetailResponse.class)));
     }
 
     @GetMapping(path = "/orders")
-    public ResponseEntity<Page<OrderListItemResponse>> getOrderDetail(
+    public ResponseEntity<SuccessResponse<Page<OrderListItemResponse>>> getOrderDetail(
             @RequestParam(value = "page_size", defaultValue = Constant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "page", defaultValue = Constant.DEFAULT_PAGE_NUMBER, required = false) int pageNo
     ) {
-        return ResponseEntity.ok(orderService.getAllOrders(pageSize, pageNo));
+        return ResponseEntity.ok(new SuccessResponse<>(orderService.getAllOrders(pageSize, pageNo)));
     }
 }

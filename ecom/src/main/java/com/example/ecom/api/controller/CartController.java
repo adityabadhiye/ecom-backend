@@ -1,6 +1,7 @@
 package com.example.ecom.api.controller;
 
 import com.example.ecom.api.request.ProductToCartRequest;
+import com.example.ecom.api.response.SuccessResponse;
 import com.example.ecom.database.entity.Cart;
 import com.example.ecom.exception.CommonAPIException;
 import com.example.ecom.service.CartService;
@@ -21,26 +22,26 @@ public class CartController {
     }
 
     @PostMapping(path = "/cart/add")
-    public ResponseEntity<Cart> addProduct(
+    public ResponseEntity<SuccessResponse<Cart>> addProduct(
             @RequestBody ProductToCartRequest request
     ) throws CommonAPIException {
         cartService.addProductQuantity(request.getProductId(), max(request.getQuantity(),1));
-        return ResponseEntity.ok(cartService.getCart());
+        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
     }
 
     @DeleteMapping(path = "/cart")
-    public ResponseEntity<Cart> deleteProduct(
+    public ResponseEntity<SuccessResponse<Cart>> deleteProduct(
             @RequestParam(value = "product_id") long productId
     ){
         cartService.deleteProduct(productId);
-        return ResponseEntity.ok(cartService.getCart());
+        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
     }
 
     @PutMapping(path = "/cart")
-    public ResponseEntity<Cart> setProduct(
+    public ResponseEntity<SuccessResponse<Cart>> setProduct(
             @RequestBody ProductToCartRequest request
     ) throws CommonAPIException {
         cartService.setProductQuantity(request.getProductId(), max(request.getQuantity(),1));
-        return ResponseEntity.ok(cartService.getCart());
+        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
     }
 }

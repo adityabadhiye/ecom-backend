@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    private static final long JWT_VALIDITY = 1000*60*60*24;
+    private static final long JWT_VALIDITY = 1000*60*60*24*100L;
     private static final String SECRET = "secret";
 
     public String getUsernameFromToken(String token){

@@ -1,22 +1,21 @@
 package com.example.ecom.api.controller;
 
-import com.example.ecom.api.request.AddProductsRequest;
+import com.example.ecom.api.response.SuccessResponse;
 import com.example.ecom.database.entity.Product;
-import com.example.ecom.database.entity.ProductCategory;
 import com.example.ecom.database.repository.CategoryRepository;
 import com.example.ecom.database.repository.ProductRepository;
 import com.example.ecom.service.ProductService;
 import com.example.ecom.util.Constant;
-import jdk.jfr.Category;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @RestController
@@ -55,7 +54,7 @@ public class ProductController {
 //    }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<Page<Product>> getAllProducts(
+    public ResponseEntity<SuccessResponse<Page<Product>>> getAllProducts(
             @RequestParam(value = "cat", required = false) String category,
             @RequestParam(value = "search", required = false) String search,
             @RequestParam(value = "sort_by", defaultValue = Constant.DEFAULT_SORT_BY, required = false) String sortBy,
@@ -65,15 +64,15 @@ public class ProductController {
             @RequestParam(value = "min", defaultValue = "0", required = false) int minPrice,
             @RequestParam(value = "max", defaultValue = "10000", required = false) int maxPrice) {
         Page<Product> products = productService.getAllProducts(category,search,sortBy,ascSort,pageSize,pageNo,minPrice,maxPrice);
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse<>(products));
     }
 
     @GetMapping(value = "/product/{id}")
-    public ResponseEntity<Product> getAllProducts(
+    public ResponseEntity<SuccessResponse<Product>> getAllProducts(
             @PathVariable(name = "id") Long productId) {
         Optional<Product> p = productService.getProductById(productId);
-        if(p.isPresent())
-            return new ResponseEntity<>(p.get(), HttpStatus.OK);
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Product not found!");
+        if(p.isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Product not found!");
+        return ResponseEntity.ok(new SuccessResponse<>(p.get()));
     }
 }

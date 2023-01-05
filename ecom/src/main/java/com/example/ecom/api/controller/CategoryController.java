@@ -1,14 +1,12 @@
 package com.example.ecom.api.controller;
 
+import com.example.ecom.api.response.SuccessResponse;
 import com.example.ecom.database.entity.ProductCategory;
 import com.example.ecom.database.repository.CategoryRepository;
 import com.example.ecom.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,9 +19,9 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     @GetMapping(value = "/category")
-    public ResponseEntity<List<ProductCategory>> getAllCategories() {
+    public ResponseEntity<SuccessResponse<List<ProductCategory>>> getAllCategories() {
         List<ProductCategory> productCategories = productCategoryService.getAllCategory();
-        return new ResponseEntity<>(productCategories, HttpStatus.OK);
+        return ResponseEntity.ok(new SuccessResponse<>(productCategories));
     }
 
 //    @PostMapping(value = "/category")
