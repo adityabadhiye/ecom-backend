@@ -62,7 +62,7 @@ public class ProductController {
             @RequestParam(value = "page_size", defaultValue = Constant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
             @RequestParam(value = "page", defaultValue = Constant.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "min", defaultValue = "0", required = false) int minPrice,
-            @RequestParam(value = "max", defaultValue = "10000", required = false) int maxPrice) {
+            @RequestParam(value = "max", defaultValue = "1000000", required = false) int maxPrice) {
         Page<Product> products = productService.getAllProducts(category,search,sortBy,ascSort,pageSize,pageNo,minPrice,maxPrice);
         return ResponseEntity.ok(new SuccessResponse<>(products));
     }
