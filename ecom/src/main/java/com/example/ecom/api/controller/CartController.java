@@ -17,8 +17,8 @@ public class CartController {
     CartService cartService;
 
     @GetMapping(path = "/cart")
-    public ResponseEntity<Cart> getCart(){
-        return ResponseEntity.ok(cartService.getCart());
+    public ResponseEntity<SuccessResponse<Cart>> getCart(){
+        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
     }
 
     @PostMapping(path = "/cart/add")
@@ -26,7 +26,7 @@ public class CartController {
             @RequestBody ProductToCartRequest request
     ) throws CommonAPIException {
         cartService.addProductQuantity(request.getProductId(), max(request.getQuantity(),1));
-        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
+        return getCart();
     }
 
     @DeleteMapping(path = "/cart")
@@ -34,7 +34,7 @@ public class CartController {
             @RequestParam(value = "product_id") long productId
     ){
         cartService.deleteProduct(productId);
-        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
+        return getCart();
     }
 
     @PutMapping(path = "/cart")
@@ -42,6 +42,6 @@ public class CartController {
             @RequestBody ProductToCartRequest request
     ) throws CommonAPIException {
         cartService.setProductQuantity(request.getProductId(), max(request.getQuantity(),1));
-        return ResponseEntity.ok(new SuccessResponse<>(cartService.getCart()));
+        return getCart();
     }
 }
