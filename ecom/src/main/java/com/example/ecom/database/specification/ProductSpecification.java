@@ -19,7 +19,7 @@ public class ProductSpecification {
             predicates.add(cb.greaterThanOrEqualTo(root.get("price"),minPrice));
             predicates.add(cb.lessThanOrEqualTo(root.get("price"),maxPrice));
             if (search != null)
-                predicates.add(cb.like(root.<String>get("title"), "%" + search + "%"));
+                predicates.add(cb.like(cb.lower(root.<String>get("title")), "%" + search.toLowerCase() + "%"));
             if (category!=null)
                 predicates.add(cb.equal(root.<ProductCategory>get("category").<String>get("name"),category));
 
