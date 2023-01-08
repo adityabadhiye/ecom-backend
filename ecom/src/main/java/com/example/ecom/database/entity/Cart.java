@@ -26,6 +26,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OrderBy("id ASC")
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<CartItem> cartItemList = new ArrayList<>();
 

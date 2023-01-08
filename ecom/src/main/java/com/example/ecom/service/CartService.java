@@ -22,7 +22,8 @@ public class CartService {
     private ProductRepository productRepository;
 
     public Cart getCart() {
-        return userService.getUserDetails().getCart();
+        return cartRepository.findByUserId(userService.getUserDetails().getId());
+//        return userService.getUserDetails().getCart();
     }
 
     public void addProductQuantity(Long productId, Integer quantity) throws CommonAPIException {

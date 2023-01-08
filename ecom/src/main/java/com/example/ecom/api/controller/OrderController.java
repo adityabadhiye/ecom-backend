@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 @RestController
 public class OrderController {
     @Autowired
@@ -44,10 +46,16 @@ public class OrderController {
         order.setZip(request.getZip());
         order.setOrderNotes(request.getOrderNotes());
         order.setPhone(request.getPhone());
-        orderService.save(order);
-        cartService.clear();
-        String sessionId = orderService.createPaymentSession(order.getId());
-        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse(sessionId)));
+//        orderService.save(order);
+//        cartService.clear();
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse("https://www.google.com")));
+//        String sessionId = orderService.createPaymentSession(order.getId());
+//        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse(sessionId)));
     }
 
     @GetMapping(path = "/order")

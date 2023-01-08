@@ -67,9 +67,11 @@ public class OrderService {
     }
 
     public Order getOrderDetail(long orderId) throws CommonAPIException {
-        Optional<Order> order = orderRepository.findById(orderId);
+//        Optional<Order> order = orderRepository.findById(orderId);
+        Optional<Order> order = orderRepository.findByIdAndUserId(orderId,userService.getUserDetails().getId());
         if(order.isEmpty())
             throw new CommonAPIException("Order not found");
+//        order.get().getUser()
         return order.get();
     }
 
@@ -77,7 +79,7 @@ public class OrderService {
         Pageable pageable = PageRequest.of(
                 pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC,"createdAt")
         );
-        Page<Order> order = orderRepository.findAll(pageable);
+        Page<Order> order = orderRepository.findAllByUserId(userService.getUserDetails().getId(),pageable);
         List<OrderListItemResponse> list= order.get()
                                 .map(o -> modelMapper.map(o, OrderListItemResponse.class))
                                 .toList();
