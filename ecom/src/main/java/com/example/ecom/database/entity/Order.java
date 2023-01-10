@@ -1,5 +1,6 @@
 package com.example.ecom.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,7 @@ public class Order {
     private OrderStatus orderStatus;
 
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     @CreationTimestamp
     private Date createdAt;
 }

@@ -25,7 +25,7 @@ public class StripeWebhookController {
     @Value("${stripe.api.key}")
     public String stripeKey;
 
-    String stripeWebhookSecret="whsec_ef0130d0b89c80238c4823706370324c969d396c1b509dda8e288c892828a2fd";
+    String stripeWebhookSecret="whsec_p9xc2YUuXsTiS3GZhnZ2KSSgLpEHvqUk";
 
     @PostMapping(value = "/webhook/stripe-events")
     public void postEventsWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) throws IOException, SignatureVerificationException {

@@ -46,16 +46,16 @@ public class OrderController {
         order.setZip(request.getZip());
         order.setOrderNotes(request.getOrderNotes());
         order.setPhone(request.getPhone());
-//        orderService.save(order);
-//        cartService.clear();
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse("https://www.google.com")));
-//        String sessionId = orderService.createPaymentSession(order.getId());
-//        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse(sessionId)));
+        orderService.save(order);
+//        try {
+//            TimeUnit.SECONDS.sleep(5);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse("https://www.google.com")));
+        String sessionId = orderService.createPaymentSession(order.getId());
+        cartService.clear();
+        return ResponseEntity.ok(new SuccessResponse<>(new CreateOrderResponse(sessionId)));
     }
 
     @GetMapping(path = "/order")
@@ -68,7 +68,7 @@ public class OrderController {
 
     @GetMapping(path = "/orders")
     public ResponseEntity<SuccessResponse<Page<OrderListItemResponse>>> getOrderDetail(
-            @RequestParam(value = "page_size", defaultValue = Constant.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "page_size", defaultValue = "100", required = false) int pageSize,
             @RequestParam(value = "page", defaultValue = Constant.DEFAULT_PAGE_NUMBER, required = false) int pageNo
     ) {
         return ResponseEntity.ok(new SuccessResponse<>(orderService.getAllOrders(pageSize, pageNo)));

@@ -8,6 +8,7 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+//@Slf4j
 public class OrderService {
     @Autowired
     OrderRepository orderRepository;
@@ -40,8 +42,8 @@ public class OrderService {
     public String stripeKey;
 
     private final long JWT_VALIDITY = 60*30;
-    private final String SUCCESS_URL = "https://google.com/success";
-    private final String FAILURE_URL = "https://google.com/fail";
+    private final String SUCCESS_URL = "http://64.227.156.184/orders";
+    private final String FAILURE_URL = "http://64.227.156.184/orders";
 
     public Order createOrderFromCart() {
         Order order = new Order();
@@ -77,7 +79,7 @@ public class OrderService {
 
     public Page<OrderListItemResponse> getAllOrders(int pageSize, int pageNo) {
         Pageable pageable = PageRequest.of(
-                pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC,"createdAt")
+                pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC,"id")
         );
         Page<Order> order = orderRepository.findAllByUserId(userService.getUserDetails().getId(),pageable);
         List<OrderListItemResponse> list= order.get()
@@ -100,7 +102,7 @@ public class OrderService {
                             .setQuantity(Long.valueOf(ci.getQuantity()))
                             .setPriceData(
                                     SessionCreateParams.LineItem.PriceData.builder()
-                                            .setUnitAmount((long) (ci.getProduct().getPrice()*100L))
+                                            .setUnitAmount((long) (ci.getProduct().getPrice()*100))
                                             .setCurrency("inr")
                                             .setProductData(
                                                     SessionCreateParams.LineItem.PriceData.ProductData.builder()
@@ -113,6 +115,7 @@ public class OrderService {
                             .build()
             );
         }
+//        log.info(lineItems.toString());
         SessionCreateParams params =
                 SessionCreateParams.builder()
                         .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -124,6 +127,7 @@ public class OrderService {
                         .setClientReferenceId(String.valueOf(orderId))
                         .build();
         Session session = Session.create(params);
+//        log.info(session.getUrl());
         return session.getUrl();
     }
 

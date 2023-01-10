@@ -3,11 +3,8 @@ package com.example.ecom.api.response;
 import com.example.ecom.database.entity.OrderItem;
 import com.example.ecom.database.entity.OrderStatus;
 import com.example.ecom.database.entity.PaymentStatus;
-import com.example.ecom.database.entity.User;
-import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,5 +25,6 @@ public class OrderDetailResponse {
     private Float totalPrice;
     private PaymentStatus paymentStatus;
     private OrderStatus orderStatus;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     private Date createdAt;
 }
