@@ -42,8 +42,8 @@ public class OrderService {
     public String stripeKey;
 
     private final long JWT_VALIDITY = 60*30;
-    private final String SUCCESS_URL = "http://64.227.156.184/orders";
-    private final String FAILURE_URL = "http://64.227.156.184/orders";
+    private final String SUCCESS_URL = "http://www.eshoppers.me/orders";
+    private final String FAILURE_URL = "http://www.eshoppers.me/orders";
 
     public Order createOrderFromCart() {
         Order order = new Order();
