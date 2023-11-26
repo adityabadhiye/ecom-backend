@@ -3,7 +3,7 @@
 
 [Live Website](https://www.eshoppers.me/) 
 
-[Frontend](https://github.com/adityabadhiye/client)
+[Frontend](https://github.com/adityabadhiye/ecom-client)
 
 
 
